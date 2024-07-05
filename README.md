@@ -2,7 +2,7 @@
 - Este proyecto es un clon de una red social, en este replicando Instagram y algunas de sus funcionalidades principales
 
 ## DESCRIPCION DEL PROYECTO
-Es un proyecto bastante completo ya que se abarcan las dos partes del desarrollo web Full Stack (Front-End y Back-End); como parte del Front-End se emplea con React, JavaScript y Chakra UI, y para el Back-End en este caso se hizo uso de Firebase de Google, en donde se emplean tres servicios: autenticacion, almacenamiento de usuarios(con sus respectivos datos) y almacenamiento de media(imagenes).
+- Es un proyecto bastante completo ya que se abarcan las dos partes del desarrollo web Full Stack (Front-End y Back-End); como parte del Front-End se emplea con React, JavaScript y Chakra UI, y para el Back-End en este caso se hizo uso de Firebase de Google, en donde se emplean tres servicios: autenticacion, almacenamiento de usuarios(con sus respectivos datos) y almacenamiento de media(imagenes).
 
 ## FUNCIONALIDADES Y CARACTERISTICAS
 Se desarrollaron varias funciones que la misma aplicacion de Instagram posee, en este caso la apliacion cuenta con:
