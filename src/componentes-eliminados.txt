@@ -1,0 +1,13 @@
+// La funcion handleAuth es la que nos va a permitir ingresar a la aplicacion (Esto es de AuthForm.jsx )
+  const handleAuth = () => {
+
+    // Aqui va a ir la logica para ingresar a la aplicacion
+    if (!inputs.email || !inputs.password) {
+      alert('Por favor llenar todos los campos')
+      return
+    }
+    navegate('/')
+  }
+
+// Se usar el hook useNavigate de React Router para linkear a donde va a ir cuando se de click en el boton de 'Iniciar Sesion'
+  const navegate = useNavigate()
