@@ -1,9 +1,15 @@
 import { Text, Flex, VStack, Box, Link } from "@chakra-ui/react"
 import SuggestedUser from "./SuggestedUser"
 import SuggestedHeader from "./SuggestedHeader"
+import useGetSuggestedUsers from "../../Hooks/useGetSuggestedUsers"
 
 // Este componente es el que define la seccion de sugerencia de usuarios al lado derecho del Inicio de la aplicacion
 function SuggestedUsers() {
+
+  const { isLoading, suggestedUsers } = useGetSuggestedUsers()
+
+  if(isLoading) return null
+
   return (
     <>
       {/** Aqui se mostraran los usuarios sugeridos, esta pequeña seccion estara dividida en dos partes */}
@@ -12,15 +18,18 @@ function SuggestedUsers() {
         {/** La primera comprende lo que es el Header que estara algunas cosas de nuestra cuenta */}
         <SuggestedHeader />
 
-        <Flex alignItems={'center'} justifyContent={'space-between'} width={'full'}>
-          <Text fontSize={12} fontWeight={'bold'} color={'gray.500'}>Sugerencias para ti</Text>
-          <Text fontSize={12} color={'blue.500'} cursor={'pointer'}>Ver todos</Text>
-        </Flex>
+        {
+          suggestedUsers.length !== 0 && (
+            <Flex alignItems={'center'} justifyContent={'space-between'} width={'full'}>
+              <Text fontSize={12} fontWeight={'bold'} color={'gray.500'}>Sugerencias para ti</Text>
+              <Text fontSize={12} color={'blue.500'} cursor={'pointer'}>Ver todos</Text>
+            </Flex>
+        )}   
 
         {/** En la segunda se mostrara algunos usuarios sugeridos */}
-        <SuggestedUser name='JuanCarlosAlvarado' avatar='/profilepic.png' followers={Math.floor(Math.random() * 1000)} />
-        <SuggestedUser name='ElPanito.10' avatar='/profilepic.png' followers={Math.floor(Math.random() * 1000)} />
-        <SuggestedUser name='No_Me_Hagan_Reir' avatar='/profilepic.png' followers={Math.floor(Math.random() * 1000)} />
+        {suggestedUsers.map((user) => (
+          <SuggestedUser key={user.id} user={user} />
+        ))}
         
         <Box fontSize={13} color={'gray.400'} marginTop={5} alignSelf={'start'}>
           &copy; Desarrollado por {' '}

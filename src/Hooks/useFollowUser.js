@@ -40,7 +40,11 @@ function useFollowUser(userID) {
       if(isFollowing){
         // Esta es la logica para el 'dejar de seguir' a algun usuario en la aplicacion
         setAuthUser({...authUser, following: authUser.following.filter(uid => uid !== userID)})
-        setUserProfile({...userProfile, followers: authUser.followers.filter(uid => uid !== authUser.uid)})
+
+        if(userProfile){
+          setUserProfile({...userProfile, followers: authUser.followers.filter(uid => uid !== authUser.uid)})
+        }
+
 
         localStorage.setItem('user-info', JSON.stringify({
           ...authUser, following: authUser.following.filter(uid => uid !== userID)
@@ -50,7 +54,10 @@ function useFollowUser(userID) {
       } else {
         // Esta es la logica para el 'seguir' a algun usuario en la aplicacion
         setAuthUser({...authUser, following: [...authUser.following, userID]})
-        setUserProfile({...userProfile, followers: [...userProfile.followers, authUser.uid]})
+
+        if(userProfile){
+          setUserProfile({...userProfile, followers: [...userProfile.followers, authUser.uid]})
+        }
 
         localStorage.setItem('user-info', JSON.stringify({
           ...authUser, following: [...authUser.following, userID]

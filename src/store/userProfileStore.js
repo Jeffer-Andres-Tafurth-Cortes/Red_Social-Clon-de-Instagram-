@@ -5,7 +5,11 @@ import { create } from 'zustand'
 const useUserProfileStore = create((set) => ({
   userProfile: null,
   setUserProfile:((userProfile) => set({ userProfile })),
-  // addPost: ()
+
+  // Esta funcion que se define en el estado global es para mostrar el numero de post realizados en el perfil
+  addPost: (post) => set((state) => ({
+    userProfile:{...state.userProfile, posts: [posts.id, ...state.userProfile.posts]}
+  }))
   
 }))
 
