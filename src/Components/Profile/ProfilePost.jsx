@@ -8,7 +8,7 @@ import PostFooter from '../FeedPosts/PostFooter'
 
 // Este componente define la logica de cada publicacion que aparece en la seccion de Publicaciones en el 
 // perfil de nuestra cuenta (Este componente es el hijo del componente ProfilePosts )
-function ProfilePost({src}) {
+function ProfilePost({ post }) {
 
   // Para agregar un modal se uso el hook useDisclosure de la libreria Chakra UI
   const {isOpen, onOpen, onClose} = useDisclosure()
@@ -51,7 +51,7 @@ function ProfilePost({src}) {
         {/** Mientras no el mouse no este encima de alguna publicacion en nuestro perfil, por defecto mostrara la imagen respectiva
          * en cada publicacion en nuestro perfil
          */}
-        <Image src={src} alt='Publicacion en Instagram' />
+        <Image src={post.imageURL} alt='Publicacion en Instagram' />
       </GridItem>
 
 
@@ -70,7 +70,7 @@ function ProfilePost({src}) {
 
               {/** La primer seccion sera nuevamente mostrar la publicacion a la cual se le dio click para mostrar el modal */}
               <Box borderRadius={4} overflow={'hidden'} border={'1px solid'} borderColor={'whiteAlpha.300'} flex={1.5}>
-                <Image src={src} alt='Publicacion en Instagram' width={'full'} />
+                <Image src={post.imageURL} alt='Publicacion en Instagram' width={'full'} />
               </Box>
 
               {/** La segunda seccion es mas para mostrar nuestro perfil y algunos detalles de la publicacion, ademas de mostrar comentarios

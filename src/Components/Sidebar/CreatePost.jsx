@@ -6,6 +6,11 @@ import usePreviousImage from '../../Hooks/usePreviousImage'
 import useShowToast from "../../Hooks/useShowToast"
 import usePostStore from "../../store/postStore"
 import useUserProfileStore from "../../store/userProfileStore"
+import useAuthStore from '../../store/authStore'
+import { useLocation } from "react-router-dom"
+import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
+import { firestore, storage } from '../../Firebase/firebase'
+import { getDownloadURL, ref, uploadString } from "firebase/storage"
 
 // Este es el componente define en la barra lateral izquierda la opcion de crear publicacion en la aplicacion
 function CreatePost() {
@@ -19,7 +24,24 @@ function CreatePost() {
   // Usamos un useRef para manejar el estado del input file que se utiliza para seleccionar la imagen
   const imageRef = useRef(null)
   
+  // Importamos el store de post y el store de usuario para poder usarlos
   const { selectedFile, handleImageChange, setSelectedFile } = usePreviousImage()
+
+  const showToast = useShowToast();
+
+  const { isLoading, handleCreatePost } = useCreatePost()
+
+  // Esta funcion estara acompañada de cuando se le de click en el boton de crear publicacion 
+  const handlePostCreation = async () => {
+    try {
+      await handleCreatePost(selectedFile, caption)
+      onClose()
+      setCaption('')
+      setSelectedFile(null)
+    } catch (error) {
+      showToast('Error', error.message, 'error')
+    }
+  }
 
   return (
     <>
@@ -50,12 +72,12 @@ function CreatePost() {
             {selectedFile && (
               <Flex marginTop={5} width={'full'} position={'relative'} justifyContent={'center'} >
                 <Image src={selectedFile} alt='Imagen seleecionada' />
-                <CloseButton position={'absolute'} top={2} right={2} onClick={() => {setSelectedFile('')}} />
+                <CloseButton position={'absolute'} top={2} right={2} onClick={() => {setSelectedFile(null)}} />
               </Flex>
             )}
           </ModalBody>
           <ModalFooter>
-            <Button marginRight={3}>Publicar</Button>
+            <Button marginRight={3} onClick={handlePostCreation} isLoading={isLoading}>Publicar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -73,4 +95,53 @@ function useCreatePost(){
   const authUser = useAuthStore((state) => state.user)
   const createPost = usePostStore((state) => state.createPost)
   const addPost = useUserProfileStore((state) => state.addPost)
+  const {pathname} = useLocation()
+
+  // Esta función se ejecuta cuando el usuario desee publicar una nueva publicación
+  const handleCreatePost = async (selectedFile, caption) => {
+
+    if (isLoading) return;
+
+    // primero sacamos un error si no se selecciona algun archivo a publicar
+    if(!selectedFile) throw new Error('Por favor seleccione una imagen')
+
+    // Si el archivo si esta seleccionado, pues prosigue a cargar y luego a crear unos datos respecto a la publicacion
+    setIsLoading(true)
+    const newPost = {
+      caption: caption,
+      likes: [],
+      comments: [],
+      createdAt: Date.now(),
+      createdBy: authUser.uid,
+    }
+
+    try {
+      // Agregamos la nueva publicacion a la coleccion de posts y al usuario que la creo
+      const postDocRef = await addDoc(collection(firestore, 'posts'), newPost)
+      const userDocRef = doc(firestore, 'users', authUser.uid)
+      const imageRef = ref(storage, `posts/${postDocRef.id}`)
+
+      // Actualizamos la caperta posts describa en la linea anterior con informacion URL de la imagen
+      await updateDoc(userDocRef, { posts:arrayUnion(postDocRef.id) })
+      await uploadString(imageRef, selectedFile, 'data_url')
+      const downloadURL = await getDownloadURL(imageRef)
+
+      await updateDoc(postDocRef, {imageURL: downloadURL})
+
+      newPost.imgURL = downloadURL
+
+      // Actualizamos el store de posts con la nueva publicacion
+      createPost({...newPost, id:postDocRef.id})
+      addPost({...newPost, id:postDocRef.id})
+
+      showToast('Success', 'Se ha realizado la publicacion correctamente', 'success')
+
+    } catch (error) {
+      showToast('Error', error.message, 'error')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return {isLoading, handleCreatePost}
 }
