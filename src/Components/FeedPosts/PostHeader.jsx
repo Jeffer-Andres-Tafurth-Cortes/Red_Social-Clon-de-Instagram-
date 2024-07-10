@@ -1,7 +1,9 @@
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 
 // Este componente definira lo que es el Header de cada publicacion del Inicio
-function PostHeader({ userName, src }) {
+function PostHeader({ post, creatorProfile }) {
+
   return (
     <>
       {/** El header de cada publicacion va a estar compuesto de varios elementos */}
@@ -9,15 +11,18 @@ function PostHeader({ userName, src }) {
         <Flex alignItems={'center'} gap={2}>
 
           {/** Primero esta la foto del usuario que hizo la respectiva publicacion */}
-          <Avatar src={src} alt={userName} size={'sm'} /> 
+          <Link to={`${creatorProfile.userName}`}>
+            <Avatar src={creatorProfile.profilePicURL} alt={userName} size={'sm'} /> 
+          </Link>
 
           {/** Segundo estara el nombre del usuario y las semanas desde que hizo la publicacion */}
-          <Flex fontSize={12} fontWeight={'bold'} gap={1}>
-            {userName}
-            <Box color={'gray.500'}>
-              • { Math.floor(Math.random() * 50) + 1 }w
-            </Box>
-          </Flex>
+            <Flex fontSize={12} fontWeight={'bold'} gap={1}>
+              <Link to={`${creatorProfile.userName}`}>{creatorProfile.userName}</Link>
+              <Box color={'gray.500'}>
+                • { Math.floor(Math.random() * 50) + 1 }w
+              </Box>
+            </Flex>
+
         </Flex>
 
         {/** Tercero estara el seguir o dejar de seguir */}

@@ -26,7 +26,7 @@ function useGetUserPosts() {
 
       try {
         // Se crea una query para obtener las publicaciones del usuario logueado
-        const q = query(collection(firestore, 'posts', where('createdBy', '==', userProfile.uid)))
+        const q = query(collection(firestore, 'posts'), where('createdBy', '==', userProfile.uid))
         const querySnapshot = await getDocs(q)
 
         // Se recorre cada documento de la query y se agrega la publicacion al array de las publicaciones
@@ -36,7 +36,7 @@ function useGetUserPosts() {
         })
 
         // Se ordenan las publicaciones por fecha de creacion en orden descendiente y se establecen en el state
-        posts.sort((a,b) => b.createdAt - a.createdAt)
+        posts.sort((a, b) => b.createdAt - a.createdAt)
         setPosts(posts)
 
       } catch (error) {

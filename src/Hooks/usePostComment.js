@@ -12,17 +12,17 @@ function usePostComment() {
   const authUser = useAuthStore(state => state.user)
   const addComment = usePostStore(state => state.addComment)
 
-  const handlePostComment = async () => {
+  const handlePostComment = async (postId, comment) => {
     if (isCommenting) return 
 
     if(!authUser) return showToast('Error', 'Debes iniciar sesion para comentar', 'error')
 
     // Los comentarios estaran formados de la siguiente manera: comentario, fecha, autor y id de la publicacion
     const newComment = {
-      comment,
+      comment: comment,
       createdAt: Date.now(),
       createdBy: authUser.uid,
-      postId
+      postId: postId
     }
 
     setIsCommenting(true)

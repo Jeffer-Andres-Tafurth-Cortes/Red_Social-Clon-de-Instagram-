@@ -69,12 +69,14 @@ function CreatePost() {
             <Textarea placeholder='Escribe algo relacionado a la publicacion' value={caption} onChange={(e) => setCaption(e.target.value)} />
             <Input type='file' hidden ref={imageRef} onChange={handleImageChange} />
             <BsFillImageFill style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer'}} size={16} onClick={() => imageRef.current.click()}/>
+            
             {selectedFile && (
               <Flex marginTop={5} width={'full'} position={'relative'} justifyContent={'center'} >
                 <Image src={selectedFile} alt='Imagen seleccionada' />
                 <CloseButton position={'absolute'} top={2} right={2} onClick={() => {setSelectedFile(null)}} />
               </Flex>
             )}
+            
           </ModalBody>
           <ModalFooter>
             <Button marginRight={3} onClick={handlePostCreation} isLoading={isLoading}>Publicar</Button>

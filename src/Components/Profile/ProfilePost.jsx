@@ -9,22 +9,25 @@ import useAuthStore from "../../store/authStore"
 import useShowToast from "../../Hooks/useShowToast"
 import { firestore, storage } from "../../Firebase/firebase"
 import { deleteObject, ref } from "firebase/storage"
-import { deleteDoc, doc, updateDoc } from "firebase/firestore"
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore"
 import usePostStore from "../../store/postStore"
+import { useState } from "react"
+import Caption from "../Comment/Caption"
 
 
 // Este componente define la logica de cada publicacion que aparece en la seccion de Publicaciones en el 
 // perfil de nuestra cuenta (Este componente es el hijo del componente ProfilePosts )
-function ProfilePost({ post }) {
+function ProfilePost ({ post }) {
+
 
   // Para agregar un modal se uso el hook useDisclosure de la libreria Chakra UI
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const userProfile = useUserProfileStore()
-  const authUser = useAuthStore((state) => state.user)
-  const showToast = useShowToast()
-  const [isDeleting, setIsDeleting] = useState(false)
-  const deletePost = usePostStore(state => state.deletePost)
-  const decrementPostsCount = useUserProfileStore((state) => state.deletePost) 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+	const userProfile = useUserProfileStore((state) => state.userProfile);
+	const authUser = useAuthStore((state) => state.user);
+	const showToast = useShowToast();
+	const [isDeleting, setIsDeleting] = useState(false);
+	const deletePost = usePostStore((state) => state.deletePost);
+	const decrementPostsCount = useUserProfileStore((state) => state.deletePost);
 
   // Esta funcion sera la encargada de eliminar un publicacion hecha por el usuario 
   const handleDeletePost = async () => {
@@ -37,7 +40,10 @@ function ProfilePost({ post }) {
       await deleteObject(imageRef)
       const userRef = doc(firestore, 'users', authUser.uid)
       await deleteDoc(doc(firestore, 'posts', post.id))
-      await updateDoc(userRef, { posts: arrayRemove(post.id)})
+
+      await updateDoc(userRef, { 
+        posts: arrayRemove(post.id)
+      })
 
       deletePost(post.id)
       decrementPostsCount(post.id)
@@ -45,6 +51,9 @@ function ProfilePost({ post }) {
 
     } catch (error) {
       showToast('Error', error.message, 'error')
+
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -107,7 +116,7 @@ function ProfilePost({ post }) {
               <Flex borderRadius={4} overflow={'hidden'} border={'1px solid'} borderColor={'whiteAlpha.300'} flex={1.5} justifyContent={'center'}
                 alignItems={'center'}
               >
-                <Image src={post.imageURL} alt='Publicacion en Instagram' width={'full'} />
+                <Image src={post.imageURL} alt='Publicacion en Instagram' style={{objectFit: 'cover'}} />
               </Flex>
 
               {/** La segunda seccion es mas para mostrar nuestro perfil y algunos detalles de la publicacion, ademas de mostrar comentarios
@@ -119,8 +128,8 @@ function ProfilePost({ post }) {
                 <Flex alignItems={'center'} justifyContent={'space-between'}>
 
                   <Flex alignItems={'center'} gap={4}>
-                    <Avatar src={userProfile.profilePicURL} size={'sm'} name='Jef_fur'>
-                    <Text fontWeight={'bold'} fontSize={12} color={'white'} textTransform={'lowercase'}>
+                    <Avatar src={userProfile.profilePicURL} size={'sm'} >
+                    <Text fontWeight={'bold'} fontSize={12} textTransform={'lowercase'}>
                       {userProfile.userName}
                     </Text>
                     </Avatar>
@@ -145,6 +154,7 @@ function ProfilePost({ post }) {
                   {/** El component comment es creado a parte y hace la referencia a todos los comentarios que pueden haber en una
                    * publicacion
                    */}
+                  {post.caption && <Caption post={post} />}
                   {post.comments.map((comment) => (
                     <Comment key={comment.id} comment={comment}/>
                   ))}

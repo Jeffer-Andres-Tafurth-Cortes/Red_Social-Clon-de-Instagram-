@@ -1,29 +1,28 @@
 import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/Constants'
 import usePostComment from '../../Hooks/usePostComment';
+import useAuthStore from '../../store/authStore';
+import useLikePost from '../../Hooks/useLikePost';
 
 // Este componente definira el Footer perteneciente a las publicaciones del Inicio
 function PostFooter({ post, username, isProfilePage }) {
 
-  // Este useState es usando para cambiar el estado de cual se da like a una publicacion
-  const [liked, setLiked] = useState(false);
-
-  // Este otro useState se usa para definir el numero inicial de likes que hay en cada publicacion
-  const [likes, setLikes] = useState(Math.floor(Math.random() * 100))
-
+  // Se trae la logica del custom hoom 'usePostComment' para poder actualizar los comentarios en alguna publicacion
   const { handlePostComment, isCommenting } = usePostComment()
+
+  // Este useState se usa para controlar el estado de la seccion de comentarios en cada publicacion
   const [comment, setComment] = useState('')
+
+  const authUser = useAuthStore((state) => state.user)
+
+  const commentRef = useRef(null)
+
+  const {isLiked, likes, handleLikePost} = useLikePost(post)
 
   const handleSubmitComment = async () => {
     await handlePostComment(post.id, comment)
     setComment('')
-  }
-
-  // Esta funcion de onClick esta asociado a lo que se hace al darle like o quitarle el like a una publicacion
-  const handleClickLikes = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1); // Se actualiza el numero de likes segun si se dio like o no
   }
 
   return (
@@ -33,12 +32,12 @@ function PostFooter({ post, username, isProfilePage }) {
         <Flex alignItems={'center'} gap={4} width={'full'} paddingTop={0} marginBottom={2} marginTop={4}>
 
           {/** El primer elemento consta de el icono de darle like en cada publicacion del Inicio de la aplicacion */}
-          <Box onClick={handleClickLikes} cursor={'pointer'} fontSize={18}>
-            {!liked ? <NotificationsLogo /> : <UnlikeLogo />}
+          <Box onClick={handleLikePost} cursor={'pointer'} fontSize={18}>
+            {!isLiked ? <NotificationsLogo /> : <UnlikeLogo />}
           </Box>
 
           {/** El segundo elemento se trata de la parte en donde estara el icono de los comentarios de cada publicacion */}
-          <Box cursor={'pointer'} fontSize={18}>
+          <Box cursor={'pointer'} fontSize={18} onClick={() => commentRef.current.focus()}>
             <CommentLogo />
           </Box>
         </Flex>
@@ -63,26 +62,35 @@ function PostFooter({ post, username, isProfilePage }) {
           </>
         )}
 
-        {/** El quinto elemento consta de la seccion para escribir un comentario en cada publicacion */}
-        <Flex alignItems={'center'} gap={2} justifyContent={'space-between'} width={'full'}>
+        {authUser &&
+          (
+            <>
+              {/** El quinto elemento consta de la seccion para escribir un comentario en cada publicacion */}
+              <Flex alignItems={'center'} gap={2} justifyContent={'space-between'} width={'full'}>
 
-          {/** La seccion de comentar estara dividida en dos partes */}
-          <InputGroup>
+                {/** La seccion de comentar estara dividida en dos partes */}
+                <InputGroup>
+            
+                  {/** La primer seccion consta del input para escribir el respectivo comentario en la publicacion */}
+                  <Input variant={'flushed'} placeholder={'Agrega un comentario ...'} fontSize={14} onChange={(e) => setComment(e.target.value)}
+                    value={comment} ref={commentRef}
+                  />
+            
+                  {/** La segunda seccion consta del boton a clickear para compartir el comentario escrito en el Input anterior */}
+                  <InputRightElement>
+                    <Button fontSize={14} color={'blue.500'} fontWeight={600} cursor={'pointer'} _hover={{color: 'white'}} 
+                      backgroundColor={'transparent'} onClick={handleSubmitComment} isLoading={isCommenting}
+                    >
+                      Enviar
+                    </Button>
+                  </InputRightElement>
+            
+                </InputGroup>
+              </Flex>
+            
+            </>
+        )}
 
-            {/** La primer seccion consta del input para escribir el respectivo comentario en la publicacion */}
-            <Input variant={'flushed'} placeholder={'Agrega un comentario ...'} fontSize={14} onChange={(e) => setComment(e.target.value)} />
-
-            {/** La segunda seccion consta del boton a clickear para compartir el comentario escrito en el Input anterior */}
-            <InputRightElement>
-              <Button fontSize={14} color={'blue.500'} fontWeight={600} cursor={'pointer'} _hover={{color: 'white'}} 
-                backgroundColor={'transparent'} onClick={handleSubmitComment}
-              >
-                Enviar
-              </Button>
-            </InputRightElement>
-
-          </InputGroup>
-        </Flex>
       </Box>
     </>
   )

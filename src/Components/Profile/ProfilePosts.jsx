@@ -17,19 +17,21 @@ function ProfilePosts() {
       {/** Este Grid definira el efecto que se esta aplicando cuando este cargando el contenido */}
       <Grid templateColumns={{ sm: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={1} columnGap={1}>
 
-        {isLoading && [0, 1, 2].map((_,index) => (
-          <VStack key={index} alignItems={'flex-start'} gap={4}>
-            <Skeleton w={'full'}>
-              <Box height={'300px'}>contenido</Box>
-            </Skeleton>
-          </VStack>  
-        ))}
+        {isLoading && 
+          [0, 1, 2].map((_,idx) => (
+            <VStack key={idx} alignItems={'flex-start'} gap={4}>
+              <Skeleton w={'full'}>
+                <Box height={'300px'}>contenido</Box>
+              </Skeleton>
+            </VStack>  
+          )
+        )}
 
         {!isLoading && (
           <>
             {posts.map((post) => (
               <ProfilePost post={post} key={post.id} />
-            ))}  
+            ))} 
           </>
         )}
 
