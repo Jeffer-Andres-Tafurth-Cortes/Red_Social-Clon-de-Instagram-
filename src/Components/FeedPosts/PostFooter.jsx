@@ -4,7 +4,7 @@ import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/Constan
 import usePostComment from '../../Hooks/usePostComment';
 
 // Este componente definira el Footer perteneciente a las publicaciones del Inicio
-function PostFooter({ post, username, comment, isProfilePage }) {
+function PostFooter({ post, username, isProfilePage }) {
 
   // Este useState es usando para cambiar el estado de cual se da like a una publicacion
   const [liked, setLiked] = useState(false);
