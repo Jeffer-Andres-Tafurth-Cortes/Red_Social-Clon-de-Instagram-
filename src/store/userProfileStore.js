@@ -9,6 +9,10 @@ const useUserProfileStore = create((set) => ({
   // Esta funcion que se define en el estado global es para mostrar el numero de post realizados en el perfil
   addPost: (post) => set((state) => ({
     userProfile:{...state.userProfile, posts: [posts.id, ...state.userProfile.posts]}
+  })),
+
+  deletePost: (postId) => set((state) => ({
+    userProfile:{...state.userProfile, posts: state.userProfile.posts.filter((id) => id!== postId)}
   }))
   
 }))

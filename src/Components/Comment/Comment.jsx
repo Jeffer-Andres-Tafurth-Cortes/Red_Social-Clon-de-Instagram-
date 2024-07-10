@@ -2,7 +2,7 @@ import { Avatar, Flex, Text } from "@chakra-ui/react"
 
 // Este componente define los comentarios que se ven cuando se da click en una publicacion de nuestro perfil
 // (los comentarios se ven cuando a abre el Modal)
-function Comment({ createdAt, userName, profilePic, text}) {
+function Comment({ comment }) {
   return (
     <>
       {/** Aqui va a estar la logica de  */}
@@ -15,7 +15,7 @@ function Comment({ createdAt, userName, profilePic, text}) {
               {userName}
             </Text>
             <Text fontSize={14} color={'gray.500'}>
-              {text}
+              {comment.comment}
             </Text>
           </Flex>
 

@@ -1,15 +1,24 @@
 import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/Constants'
+import usePostComment from '../../Hooks/usePostComment';
 
 // Este componente definira el Footer perteneciente a las publicaciones del Inicio
-function PostFooter({ username, comment, isProfilePage }) {
+function PostFooter({ post, username, comment, isProfilePage }) {
 
   // Este useState es usando para cambiar el estado de cual se da like a una publicacion
   const [liked, setLiked] = useState(false);
 
   // Este otro useState se usa para definir el numero inicial de likes que hay en cada publicacion
   const [likes, setLikes] = useState(Math.floor(Math.random() * 100))
+
+  const { handlePostComment, isCommenting } = usePostComment()
+  const [comment, setComment] = useState('')
+
+  const handleSubmitComment = async () => {
+    await handlePostComment(post.id, comment)
+    setComment('')
+  }
 
   // Esta funcion de onClick esta asociado a lo que se hace al darle like o quitarle el like a una publicacion
   const handleClickLikes = () => {
@@ -61,11 +70,13 @@ function PostFooter({ username, comment, isProfilePage }) {
           <InputGroup>
 
             {/** La primer seccion consta del input para escribir el respectivo comentario en la publicacion */}
-            <Input variant={'flushed'} placeholder={'Agrega un comentario ...'} fontSize={14} />
+            <Input variant={'flushed'} placeholder={'Agrega un comentario ...'} fontSize={14} onChange={(e) => setComment(e.target.value)} />
 
             {/** La segunda seccion consta del boton a clickear para compartir el comentario escrito en el Input anterior */}
             <InputRightElement>
-              <Button fontSize={14} color={'blue.500'} fontWeight={600} cursor={'pointer'} _hover={{color: 'white'}} backgroundColor={'transparent'}>
+              <Button fontSize={14} color={'blue.500'} fontWeight={600} cursor={'pointer'} _hover={{color: 'white'}} 
+                backgroundColor={'transparent'} onClick={handleSubmitComment}
+              >
                 Enviar
               </Button>
             </InputRightElement>

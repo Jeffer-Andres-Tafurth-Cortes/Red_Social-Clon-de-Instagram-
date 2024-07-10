@@ -1,9 +1,16 @@
-import { Avatar, Box, Divider, Flex, GridItem, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text, VStack, useDisclosure } from "@chakra-ui/react"
+import { Avatar, Button, Divider, Flex, GridItem, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text, VStack, useDisclosure } from "@chakra-ui/react"
 import { AiFillHeart } from "react-icons/ai"
 import { FaComment } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
 import Comment from "../Comment/Comment"
 import PostFooter from '../FeedPosts/PostFooter'
+import useUserProfileStore from "../../store/userProfileStore"
+import useAuthStore from "../../store/authStore"
+import useShowToast from "../../Hooks/useShowToast"
+import { firestore, storage } from "../../Firebase/firebase"
+import { deleteObject, ref } from "firebase/storage"
+import { deleteDoc, doc, updateDoc } from "firebase/firestore"
+import usePostStore from "../../store/postStore"
 
 
 // Este componente define la logica de cada publicacion que aparece en la seccion de Publicaciones en el 
@@ -12,6 +19,34 @@ function ProfilePost({ post }) {
 
   // Para agregar un modal se uso el hook useDisclosure de la libreria Chakra UI
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const userProfile = useUserProfileStore()
+  const authUser = useAuthStore((state) => state.user)
+  const showToast = useShowToast()
+  const [isDeleting, setIsDeleting] = useState(false)
+  const deletePost = usePostStore(state => state.deletePost)
+  const decrementPostsCount = useUserProfileStore((state) => state.deletePost) 
+
+  // Esta funcion sera la encargada de eliminar un publicacion hecha por el usuario 
+  const handleDeletePost = async () => {
+    if(!window.confirm('¿Estas seguro de eliminar esta publicacion?')) return
+    if(isDeleting) return
+
+    try {
+      // Va a tomar como referencia el id de la publicacion a eliminar
+      const imageRef = ref(storage, `posts/${post.id}`)
+      await deleteObject(imageRef)
+      const userRef = doc(firestore, 'users', authUser.uid)
+      await deleteDoc(doc(firestore, 'posts', post.id))
+      await updateDoc(userRef, { posts: arrayRemove(post.id)})
+
+      deletePost(post.id)
+      decrementPostsCount(post.id)
+      showToast('Success','Se ha eliminado la publicación correctamente','success')
+
+    } catch (error) {
+      showToast('Error', error.message, 'error')
+    }
+  }
 
   return (
     <>
@@ -33,7 +68,7 @@ function ProfilePost({ post }) {
              */}
             <Flex>
               <AiFillHeart size={22} />
-              <Text fontWeight={'bold'} marginLeft={1}>{Math.floor(Math.random() * 100)}</Text>
+              <Text fontWeight={'bold'} marginLeft={1}>{post.likes.length}</Text>
             </Flex>
 
             {/** Este Flex mostrara la cantidad de comentarios que tiene una publicacion cuando se pasa el mouse por encima
@@ -41,7 +76,7 @@ function ProfilePost({ post }) {
              */}
             <Flex>
               <FaComment size={22} />
-              <Text fontWeight={'bold'} marginLeft={1}>{Math.floor(Math.random() * 100)}</Text>
+              <Text fontWeight={'bold'} marginLeft={1}>{post.comments.length}</Text>
             </Flex>
 
           </Flex>
@@ -51,12 +86,12 @@ function ProfilePost({ post }) {
         {/** Mientras no el mouse no este encima de alguna publicacion en nuestro perfil, por defecto mostrara la imagen respectiva
          * en cada publicacion en nuestro perfil
          */}
-        <Image src={post.imageURL} alt='Publicacion en Instagram' />
+        <Image src={post.imageURL} alt='Publicacion en Instagram' width={'100%'} height={'100%'} objectFit={'cover'} />
       </GridItem>
 
 
 
-      {/** A partir de aqui va a estar la logica de lo que seria el Modla cuando se hace click en alguna publicacion de nuestro perfil */}
+      {/** A partir de aqui va a estar la logica de lo que seria el Modal cuando se hace click en alguna publicacion de nuestro perfil */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={{ base: '3xl', md: '5xl'}}>
         <ModalOverlay />
         <ModalContent>
@@ -66,12 +101,14 @@ function ProfilePost({ post }) {
           <ModalBody backgroundColor={'black'} paddingBottom={5}>
 
             {/** Va a tener dos secciones */}
-            <Flex gap={4} width={{ base: '90%', sm: '70%', md: 'full'}} marginX={'auto'}>
+            <Flex gap={4} width={{ base: '90%', sm: '70%', md: 'full'}} marginX={'auto'} maxHeight={'90hv'} minHeight={'50vh'}>
 
               {/** La primer seccion sera nuevamente mostrar la publicacion a la cual se le dio click para mostrar el modal */}
-              <Box borderRadius={4} overflow={'hidden'} border={'1px solid'} borderColor={'whiteAlpha.300'} flex={1.5}>
+              <Flex borderRadius={4} overflow={'hidden'} border={'1px solid'} borderColor={'whiteAlpha.300'} flex={1.5} justifyContent={'center'}
+                alignItems={'center'}
+              >
                 <Image src={post.imageURL} alt='Publicacion en Instagram' width={'full'} />
-              </Box>
+              </Flex>
 
               {/** La segunda seccion es mas para mostrar nuestro perfil y algunos detalles de la publicacion, ademas de mostrar comentarios
                * que posiblemente hayan hecho otras personas en nuestra publicacion y al mismo tiempo agregar un comentario
@@ -82,16 +119,19 @@ function ProfilePost({ post }) {
                 <Flex alignItems={'center'} justifyContent={'space-between'}>
 
                   <Flex alignItems={'center'} gap={4}>
-                    <Avatar src='/Personal-Logo.png' size={'sm'} name='Jef_fur'>
+                    <Avatar src={userProfile.profilePicURL} size={'sm'} name='Jef_fur'>
                     <Text fontWeight={'bold'} fontSize={12} color={'white'} textTransform={'lowercase'}>
-                      Jef_fur
+                      {userProfile.userName}
                     </Text>
                     </Avatar>
                   </Flex>
 
-                  <Box _hover={{ backgroundColor: 'whiteAlpha.300', color: 'red.600'}} borderRadius={4} padding={1}>
-                    <MdDelete size={20} cursor={'pointer'} />
-                  </Box>
+                  {authUser?.uid === userProfile.uid && (
+                    <Button size={'sm'} backgroundColor={'transparent'} _hover={{ backgroundColor: 'whiteAlpha.300', color: 'red.600'}} 
+                    borderRadius={4} padding={1} onClick={handleDeletePost} isLoading={isDeleting} >
+                      <MdDelete size={20} cursor={'pointer'} />
+                    </Button>
+                  )}
 
                 </Flex>
 
@@ -105,17 +145,9 @@ function ProfilePost({ post }) {
                   {/** El component comment es creado a parte y hace la referencia a todos los comentarios que pueden haber en una
                    * publicacion
                    */}
-                  <Comment createdAt={ `${Math.floor(Math.random() * 20)} min` } 
-                    userName='Jef_fur' profilePic='/Personal-Logo.png' text='Empezando mi marca personal'
-                  />
-
-                  <Comment createdAt={ `${Math.floor(Math.random() * 20)} min` } 
-                    userName='JuanCarlosAlvarado' profilePic='/profilepic.png' text='💻👨‍💻'
-                  />
-
-                  <Comment createdAt={ `${Math.floor(Math.random() * 20)} min` } 
-                    userName='martinaramirez15' profilePic='/img3 (1).png' text='Con toda 💪'
-                  />
+                  {post.comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment}/>
+                  ))}
 
                 </VStack>
 
@@ -124,7 +156,7 @@ function ProfilePost({ post }) {
                 {/** Debido a que se usa la misma logica de la parte de comentarios de las publicaciones en el Inicio de la aplicacion
                  * se reutiliza el componente PostFooter a diferente de que con ayuda de un Prop no se renderiza una seccion
                  */}
-                <PostFooter isProfilePage={true} />
+                <PostFooter isProfilePage={true} post={post} />
 
               </Flex>
 

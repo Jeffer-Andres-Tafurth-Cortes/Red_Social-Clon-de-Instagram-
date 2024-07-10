@@ -71,7 +71,7 @@ function CreatePost() {
             <BsFillImageFill style={{ marginTop: '15px', marginLeft: '5px', cursor: 'pointer'}} size={16} onClick={() => imageRef.current.click()}/>
             {selectedFile && (
               <Flex marginTop={5} width={'full'} position={'relative'} justifyContent={'center'} >
-                <Image src={selectedFile} alt='Imagen seleecionada' />
+                <Image src={selectedFile} alt='Imagen seleccionada' />
                 <CloseButton position={'absolute'} top={2} right={2} onClick={() => {setSelectedFile(null)}} />
               </Flex>
             )}
@@ -91,10 +91,10 @@ export default CreatePost
 function useCreatePost(){
   const showToast = useShowToast()
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
   const authUser = useAuthStore((state) => state.user)
   const createPost = usePostStore((state) => state.createPost)
   const addPost = useUserProfileStore((state) => state.addPost)
+  const userProfile = useUserProfileStore((state) => state.userProfile)
   const {pathname} = useLocation()
 
   // Esta función se ejecuta cuando el usuario desee publicar una nueva publicación
@@ -128,11 +128,12 @@ function useCreatePost(){
 
       await updateDoc(postDocRef, {imageURL: downloadURL})
 
-      newPost.imgURL = downloadURL
+      newPost.imageURL = downloadURL
+
 
       // Actualizamos el store de posts con la nueva publicacion
-      createPost({...newPost, id:postDocRef.id})
-      addPost({...newPost, id:postDocRef.id})
+      if(userProfile.uid === authUser.uid) createPost({...newPost, id:postDocRef.id})
+      if(pathname !== '/' && userProfile.uid === authUser.uid) addPost({...newPost, id:postDocRef.id})
 
       showToast('Success', 'Se ha realizado la publicacion correctamente', 'success')
 

@@ -32,7 +32,6 @@ function useGetUserProfileByUserName(userName) {
         });
 
         setUserProfile(userDoc)
-        console.log(userDoc);
 
       } catch (error) {
         showToast('Error', error.message, 'error')

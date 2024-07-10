@@ -11,7 +11,7 @@ function useGetUserPosts() {
   // Se hace uso de un useState para almacenar los post del usuario logueado en la aplicacion y tambien se usa el
   // custom hook usePostStore para almacenar las publicaciones
   const [isLoading, setIsLoading] = useState(true)
-  const {posts, setPosts} = usePostStore()
+  const { posts, setPosts } = usePostStore()
   const showToast = useShowToast()
   const userProfile = useUserProfileStore((state) => state.userProfile)
 
@@ -31,7 +31,7 @@ function useGetUserPosts() {
 
         // Se recorre cada documento de la query y se agrega la publicacion al array de las publicaciones
         const posts = []
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           posts.push({...doc.data(), id: doc.id})
         })
 
