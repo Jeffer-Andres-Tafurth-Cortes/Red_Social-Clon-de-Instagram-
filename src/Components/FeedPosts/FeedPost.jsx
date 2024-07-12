@@ -19,7 +19,7 @@ function FeedPost({ post }) {
       </Box>
 
       {/** Por ultimo, el Footer de la publicacion */}
-      <PostFooter userName={userName} comment={comment} />
+      <PostFooter post={post} creatorProfile={userProfile} />
     </>
   )
 }

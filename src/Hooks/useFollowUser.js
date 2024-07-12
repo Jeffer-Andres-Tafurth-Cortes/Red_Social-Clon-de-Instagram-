@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore"
 import useUserProfileStore from '../store/userProfileStore'
 import useShowToast from './useShowToast'
-import { firestore, auth } from '../Firebase/firebase'
+import { firestore } from '../Firebase/firebase'
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 // Este custom hook va a tener la logica en toda la aplicacion en cuando al 'seguir' o 'dejas de seguir' algun otro usuario
 // en al aplicacion
-function useFollowUser(userID) {
+function useFollowUser(userId) {
 
   const [isUpdating, setIsUpdating] = useState(false)
   const [isFollowing, setIsFollowing] = useState(false)
@@ -27,10 +27,10 @@ function useFollowUser(userID) {
 
       // Se obtienen las referencias al usuario actual y al usuario a seguir o dejar de seguir
       const currentUserRef = doc(firestore, 'users', authUser.uid)
-      const userToFollowOrUnfollowRef = doc(firestore, 'users', userID)
+      const userToFollowOrUnfollowRef = doc(firestore, 'users', userId)
 
       await updateDoc(currentUserRef, {
-        following: isFollowing ? arrayRemove(userID) : arrayUnion(userID)
+        following: isFollowing ? arrayRemove(userId) : arrayUnion(userId)
       })
 
       await updateDoc(userToFollowOrUnfollowRef, {
@@ -39,7 +39,7 @@ function useFollowUser(userID) {
 
       if(isFollowing){
         // Esta es la logica para el 'dejar de seguir' a algun usuario en la aplicacion
-        setAuthUser({...authUser, following: authUser.following.filter(uid => uid !== userID)})
+        setAuthUser({...authUser, following: authUser.following.filter(uid => uid !== userId)})
 
         if(userProfile){
           setUserProfile({...userProfile, followers: authUser.followers.filter(uid => uid !== authUser.uid)})
@@ -47,20 +47,20 @@ function useFollowUser(userID) {
 
 
         localStorage.setItem('user-info', JSON.stringify({
-          ...authUser, following: authUser.following.filter(uid => uid !== userID)
+          ...authUser, following: authUser.following.filter(uid => uid !== userId)
         }))
         setIsFollowing(false)
 
       } else {
         // Esta es la logica para el 'seguir' a algun usuario en la aplicacion
-        setAuthUser({...authUser, following: [...authUser.following, userID]})
+        setAuthUser({...authUser, following: [...authUser.following, userId]})
 
         if(userProfile){
           setUserProfile({...userProfile, followers: [...userProfile.followers, authUser.uid]})
         }
 
         localStorage.setItem('user-info', JSON.stringify({
-          ...authUser, following: [...authUser.following, userID]
+          ...authUser, following: [...authUser.following, userId]
         }))
         setIsFollowing(true)
       }
@@ -76,10 +76,10 @@ function useFollowUser(userID) {
   // Se ejecuta cada vez que se cambia el userID o el authUser
   useEffect(() => {
     if(authUser){
-      const isFollowing = authUser.following.includes(userID)
+      const isFollowing = authUser.following.includes(userId)
       setIsFollowing(isFollowing)
     }
-  }, [authUser, userID]);
+  }, [authUser, userId]);
 
   return { isUpdating, isFollowing, handleFollowUser }
 }

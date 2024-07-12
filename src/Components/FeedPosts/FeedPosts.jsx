@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Skeleton, SkeletonCircle, VStack } from '@chakra-ui/react'
+import { Box, Container, Flex, Skeleton, SkeletonCircle, Text, VStack } from '@chakra-ui/react'
 import FeedPost from './FeedPost'
 import useGetFeedPost from '../../Hooks/useGetFeedPost'
 
@@ -36,6 +36,15 @@ function FeedPosts() {
         {!isLoading && posts.length > 0 && posts.map((post) => (
           <FeedPost key={post.id} post={post} />
         ))}
+
+        {!isLoading && posts.length === 0 && (
+          <>
+            <Text fontSize={'md'} color={'red.400'}>
+              Al parecer que no sigues a ninguna cuenta.
+            </Text>
+            <Text color={'red.400'}>Empieza a seguir alguna cuenta para que veas sus publicaciones</Text>
+          </>
+        )}
 
       </Container>
     </>

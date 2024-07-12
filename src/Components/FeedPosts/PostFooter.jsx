@@ -1,12 +1,14 @@
-import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text, useDisclosure } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/Constants'
 import usePostComment from '../../Hooks/usePostComment';
 import useAuthStore from '../../store/authStore';
 import useLikePost from '../../Hooks/useLikePost';
+import { timeAgo } from '../../Utils/timeAgo';
+import CommentsModal from '../Modals/CommentsModal';
 
 // Este componente definira el Footer perteneciente a las publicaciones del Inicio
-function PostFooter({ post, username, isProfilePage }) {
+function PostFooter({ post, isProfilePage, creatorProfile }) {
 
   // Se trae la logica del custom hoom 'usePostComment' para poder actualizar los comentarios en alguna publicacion
   const { handlePostComment, isCommenting } = usePostComment()
@@ -19,6 +21,8 @@ function PostFooter({ post, username, isProfilePage }) {
   const commentRef = useRef(null)
 
   const {isLiked, likes, handleLikePost} = useLikePost(post)
+
+  const { isOpen, onClose, onOpen } = useDisclosure() 
 
   const handleSubmitComment = async () => {
     await handlePostComment(post.id, comment)
@@ -47,18 +51,31 @@ function PostFooter({ post, username, isProfilePage }) {
           {likes} likes
         </Text>
 
+        {isProfilePage && (
+          <>
+            <Text fontSize={12} color={'gray'}>
+              Publicado {timeAgo(post.createdAt)}
+            </Text>
+          </>
+        )}
+
         {/** El cuarto elemento se trata de la cantidad de comentarios que tiene cada publicacion */}
         {!isProfilePage && (
           <>
             <Text fontSize='sm' fontWeight={700}>
-              {username}{' '}
+              {creatorProfile?.username}{' '}
               <Text as='span' fontWeight={400}>
-                {comment}
+                {post.caption}
               </Text>
             </Text>
-            <Text fontSize='sm' color={'gray'}>
-              Ver los {Math.floor(Math.random() * 100)} comentarios
-            </Text>
+            {post.comments.length > 0 && (
+              <Text fontSize='sm' color={'gray'} cursor={'pointer'} onClick={onOpen}>
+                Ver los {post.comments.length} comentarios
+              </Text>
+            )}
+
+            {/** El Modal de los comentarios solo se abre si estamos en la Pagina de Inicio */}
+            {isOpen ? (<CommentsModal isOpen={isOpen} onClose={onClose} post={post} />) : null}
           </>
         )}
 

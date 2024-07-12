@@ -129,7 +129,7 @@ function ProfilePost ({ post }) {
 
                   <Flex alignItems={'center'} gap={4}>
                     <Avatar src={userProfile.profilePicURL} size={'sm'} >
-                    <Text fontWeight={'bold'} fontSize={12} textTransform={'lowercase'}>
+                    <Text fontWeight={'bold'} fontSize={12} textTransform={'lowercase'} >
                       {userProfile.userName}
                     </Text>
                     </Avatar>
