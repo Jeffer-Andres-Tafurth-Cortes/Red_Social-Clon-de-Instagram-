@@ -23,6 +23,7 @@ function useGetSuggestedUsers() {
 
         const querySnapshot = await getDocs(q)
         const users = []
+
         querySnapshot.forEach((doc) => {
           users.push({...doc.data(), id: doc.id})
         });
@@ -31,6 +32,7 @@ function useGetSuggestedUsers() {
         
       } catch (error) {
         showToast('Error', error.message, 'error')
+        
       } finally {
         setIsLoading(false)
       }

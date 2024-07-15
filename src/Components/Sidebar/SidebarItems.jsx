@@ -12,7 +12,6 @@ function SidebarItems() {
       <Notifications />
       <CreatePost />
       <ProfileLink />
-      
     </>
   )
 }

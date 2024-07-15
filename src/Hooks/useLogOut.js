@@ -7,11 +7,11 @@ import useAuthStore from "../store/authStore"
 // en al aplicacion, devolviendonos a la pagina de autenticacion 
 function useLogOut() {
 
-  const [signOut, isLogingOut, error] = useSignOut(auth)
+  const [signOut, isLoggingOut, error] = useSignOut(auth)
   const showToast = useShowToast()
   const logoutUser = useAuthStore((state) => state.logout)
 
-  const handleLogOut = async() => {
+  const handleLogout = async() => {
     try {
       await signOut()
       localStorage.removeItem('user-info')
@@ -22,7 +22,7 @@ function useLogOut() {
     }
   }
 
-  return {handleLogOut, isLogingOut, error}
+  return { handleLogout, isLoggingOut, error }
 }
 
 export default useLogOut

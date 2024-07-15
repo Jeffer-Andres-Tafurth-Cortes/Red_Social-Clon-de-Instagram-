@@ -12,7 +12,7 @@ function ProfilePosts() {
   const noPostsFound = !isLoading && posts.length === 0
   if(noPostsFound) return <NoPostsFound />
 
-  return (
+  return ( 
     <>
       {/** Este Grid definira el efecto que se esta aplicando cuando este cargando el contenido */}
       <Grid templateColumns={{ sm: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={1} columnGap={1}>

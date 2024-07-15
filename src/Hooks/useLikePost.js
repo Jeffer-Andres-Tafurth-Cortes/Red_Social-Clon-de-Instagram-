@@ -24,7 +24,7 @@ function useLikePost(post) {
     try {
       const postRef = doc(firestore, 'posts', post.id)
       await updateDoc(postRef, {
-        likes: isLiked ? arrayRemove(authUser.uid) : arrayUnion(authUser.id)
+        likes: isLiked ? arrayRemove(authUser.uid) : arrayUnion(authUser.uid)
       })
       setIsLiked(!isLiked)
       isLiked ? setLikes(likes - 1) : setLikes(likes + 1)
@@ -37,7 +37,7 @@ function useLikePost(post) {
     }
   }
 
-  return {isLiked, likes, handleLikePost}
+  return {isLiked, likes, handleLikePost, isUpdating}
 
 }
 

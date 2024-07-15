@@ -14,13 +14,13 @@ import { getStorage } from "firebase/storage";
 
 // Esta es la configuracion de Firebase dentro de la aplicacion
 const firebaseConfig = {
-  apiKey: "AIzaSyD0WGPxWUSBTKr7eVz8rwhTKGeU6H7mDnk",
-  authDomain: "instagram-clone-full-sta-e1ec1.firebaseapp.com",
-  projectId: "instagram-clone-full-sta-e1ec1",
-  storageBucket: "instagram-clone-full-sta-e1ec1.appspot.com",
-  messagingSenderId: "556826088725",
-  appId: "1:556826088725:web:22e28f05d54348718f851c",
-  measurementId: "G-8JBVCZC860"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_API_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Las siguientes constantes lo que hacen es inicializar firebase
@@ -29,4 +29,4 @@ const auth = getAuth(app)
 const firestore = getFirestore(app)
 const storage = getStorage(app)
 
-export {app, auth, firestore, storage}
+export { app, auth, firestore, storage }

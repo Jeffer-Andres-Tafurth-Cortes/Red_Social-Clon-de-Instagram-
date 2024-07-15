@@ -9,8 +9,8 @@ import usePostStore from "../store/postStore"
 function usePostComment() {
   const [isCommenting, setIsCommenting] = useState(false)
   const showToast = useShowToast()
-  const authUser = useAuthStore(state => state.user)
-  const addComment = usePostStore(state => state.addComment)
+  const authUser = useAuthStore((state) => state.user)
+  const addComment = usePostStore((state) => state.addComment)
 
   const handlePostComment = async (postId, comment) => {
     if (isCommenting) return 
@@ -25,17 +25,12 @@ function usePostComment() {
       postId: postId
     }
 
-    setIsCommenting(true)
     try {
       // Aqui va la logica para agregar el comentario a la base de datos
       await updateDoc(doc(firestore, 'posts', postId), {
         comments: arrayUnion(newComment)
       })
       addComment(postId, newComment)
-
-      
-      // Luego mostrar un mensaje de éxito al usuario
-      showToast('Comentario agregado exitosamente!')
       
     } catch (error) {
       showToast('Error', error.message, 'error')

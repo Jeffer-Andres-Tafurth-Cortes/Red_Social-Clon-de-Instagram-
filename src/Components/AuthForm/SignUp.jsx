@@ -30,7 +30,7 @@ function SignUp() {
         type='text' 
         value={inputs.fullName} 
         size={'sm'}
-        onChange={(e) => setInputs({...inputs, fullName:e.target.value})} 
+        onChange={(e) => setInputs({...inputs, fullName: e.target.value})} 
       />
       
       {/** Este segundo Input corresponde a escribir el un nombre de usuario para la aplicacion */}
@@ -40,7 +40,7 @@ function SignUp() {
         type='text' 
         value={inputs.userName}
         size={'sm'}
-        onChange={(e) => setInputs({...inputs, userName:e.target.value})}
+        onChange={(e) => setInputs({...inputs, userName: e.target.value})}
       />
 
       {/** Este tercer Input corresponde a escribir el correo electronico */}
@@ -50,7 +50,7 @@ function SignUp() {
         type='email' 
         value={inputs.email}
         size={'sm'}
-        onChange={(e) => setInputs({...inputs, email:e.target.value})}
+        onChange={(e) => setInputs({...inputs, email: e.target.value})}
       />
 
       <InputGroup>
@@ -61,7 +61,7 @@ function SignUp() {
           type={showPassword ? 'text' : 'password'}  
           value={inputs.password}
           size={'sm'}
-          onChange={(e) => setInputs({...inputs, password:e.target.value})}
+          onChange={(e) => setInputs({...inputs, password: e.target.value})}
         />
 
         <InputRightElement height={'full'}>

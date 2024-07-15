@@ -1,20 +1,20 @@
 import { Box, Container, Flex, Skeleton, SkeletonCircle, Text, VStack } from '@chakra-ui/react'
 import FeedPost from './FeedPost'
-import useGetFeedPost from '../../Hooks/useGetFeedPost'
+import useGetFeedPosts from '../../Hooks/useGetFeedPosts'
 
 // Este componente definira las publicaciones que se mostraran en el Inicio de la aplicacion al registrarse o
 // al iniciar sesion
 function FeedPosts() {
 
   // Se hace uso de useGetFeedPost para obtener las publicaciones del Inicio de la aplicacion
-  const { isLoading, posts } = useGetFeedPost()
+  const { isLoading, posts } = useGetFeedPosts()
 
   return (
     <>
       <Container maxWidth={'container.sm'} paddingY={10} paddingX={2}>
 
         {/** Este es un efecto para cuando este cargando el contenido a mostrar de cada publicacion respectivamente */}
-        {isLoading && [0,1,2,3].map((_,index) => (
+        {isLoading && [0, 1, 2].map((_,index) => (
           <VStack key={index} gap={4} alignItems={'flex-start'} marginBottom={10}>
             <Flex gap={2} >
               <SkeletonCircle size={10} />

@@ -46,11 +46,9 @@ function CreatePost() {
   return (
     <>
       {/** Este 'Tooltip' define la opcion de crear publicaciones */}
-      <Tooltip hasArrow label={'Create'} placement='right' marginLeft={1} 
-        openDelay={500} display={{base: 'block', md: 'none'}}
-      >
-        <Flex display={'flex'} alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} onClick={onOpen}
-          borderRadius={6} padding={2} width={{base: '10', md: 'full'}} justifyContent={{base: 'center', md: 'flex-start'}}
+      <Tooltip hasArrow label={'Create'} placement='right' marginLeft={1} openDelay={500} display={{ base: 'block', md: 'none' }}>
+        <Flex alignItems={'center'} gap={4} _hover={{ backgroundColor: 'whiteAlpha.400' }} onClick={onOpen}
+          borderRadius={6} padding={2} width={{ base: '10', md: 'full' }} justifyContent={{ base: 'center', md: 'flex-start' }}
         >
           <CreatePostLogo size={25} />
           <Box display={{base: 'none', md: 'block'}}>
@@ -91,13 +89,14 @@ export default CreatePost
 
 // Esta función se encarga de manejar el estado del texto y la imagen seleccionada para crear la publicación
 function useCreatePost(){
+
   const showToast = useShowToast()
   const [isLoading, setIsLoading] = useState(false)
   const authUser = useAuthStore((state) => state.user)
   const createPost = usePostStore((state) => state.createPost)
   const addPost = useUserProfileStore((state) => state.addPost)
   const userProfile = useUserProfileStore((state) => state.userProfile)
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
 
   // Esta función se ejecuta cuando el usuario desee publicar una nueva publicación
   const handleCreatePost = async (selectedFile, caption) => {
@@ -109,6 +108,7 @@ function useCreatePost(){
 
     // Si el archivo si esta seleccionado, pues prosigue a cargar y luego a crear unos datos respecto a la publicacion
     setIsLoading(true)
+
     const newPost = {
       caption: caption,
       likes: [],
@@ -124,7 +124,7 @@ function useCreatePost(){
       const imageRef = ref(storage, `posts/${postDocRef.id}`)
 
       // Actualizamos la caperta posts describa en la linea anterior con informacion URL de la imagen
-      await updateDoc(userDocRef, { posts:arrayUnion(postDocRef.id) })
+      await updateDoc(userDocRef, { posts: arrayUnion(postDocRef.id) })
       await uploadString(imageRef, selectedFile, 'data_url')
       const downloadURL = await getDownloadURL(imageRef)
 
@@ -134,7 +134,7 @@ function useCreatePost(){
 
 
       // Actualizamos el store de posts con la nueva publicacion
-      if(userProfile.uid === authUser.uid) createPost({...newPost, id:postDocRef.id})
+      if(userProfile.uid === authUser.uid) createPost({ ...newPost, id: postDocRef.id })
       if(pathname !== '/' && userProfile.uid === authUser.uid) addPost({...newPost, id:postDocRef.id})
 
       showToast('Success', 'Se ha realizado la publicacion correctamente', 'success')

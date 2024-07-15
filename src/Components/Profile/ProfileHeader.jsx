@@ -33,7 +33,7 @@ function ProfileHeader() {
          * de nuestro perfil  
            */}
         <VStack alignItems={'start'} gap={2} marginX={'auto'} flex={1}>
-          <Flex gap={4}  direction={{base: 'column', sm: 'row'}} justifyContent={{ base: 'center', sm: 'flex-start'}} alignItems={'center'} 
+          <Flex gap={4}  direction={{ base: 'column', sm: 'row' }} justifyContent={{ base: 'center', sm: 'flex-start'}} alignItems={'center'} 
             width={'full'}
           >
             <Text fontSize={{base: 'sm', md: 'lg'}}>{userProfile.userName}</Text>
@@ -71,20 +71,20 @@ function ProfileHeader() {
 
             {/** Esta parte pertenece en cuanto a las publicacion */}
             <Text fontSize={{ base: 'xs', md: 'sm' }}> 
-              {userProfile.posts.length}
-              <Text as={'span'} fontWeight={'bold'} marginRight={1}> Publicaciones</Text>
+              <Text as={'span'} fontWeight={'bold'} marginRight={1}>{userProfile.posts.length}</Text>
+              Publicaciones
             </Text>
 
             {/** Esta parte pertenece en cuanto a los seguidores */}
             <Text fontSize={{ base: 'xs', md: 'sm' }}>
-              {userProfile.followers.length}
-              <Text as={'span'} fontWeight={'bold'} marginRight={1}> Seguidores</Text>
+              <Text as={'span'} fontWeight={'bold'} marginRight={1}>{userProfile.followers.length}</Text>
+              Seguidores
             </Text>
 
             {/** Esta parte pertenece en cuanto a los seguidos */}
             <Text fontSize={{ base: 'xs', md: 'sm' }}>
-              {userProfile.following.length}
-              <Text as={'span'} fontWeight={'bold'} marginRight={1}> Seguidos</Text>
+              <Text as={'span'} fontWeight={'bold'} marginRight={1}>{userProfile.following.length}</Text>
+              Seguidos
             </Text>
 
           </Flex>
@@ -92,10 +92,7 @@ function ProfileHeader() {
           <Flex alignItems={'center'} gap={4}>
             <Text fontSize={'sm'} fontWeight={'bold'}>{userProfile.fullName}</Text>
           </Flex>
-
-          <Flex alignItems={'center'} gap={4}>
-            <Text fontSize={'sm'}>{userProfile.bio}</Text>
-          </Flex>
+          <Text fontSize={'sm'}>{userProfile.bio}</Text>
         </VStack>
 
       </Flex>

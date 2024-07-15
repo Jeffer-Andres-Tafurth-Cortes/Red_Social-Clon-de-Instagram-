@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 function SuggestedHeader() {
 
   // En esta seccion utilizamos el Hook de React para manejar la logica de cerrar sesion de la aplicacion
-  const {handleLogOut, isLogingOut} = useLogOut()
+  const { handleLogOut, isLoggingOut } = useLogOut()
 
   const authUser = useAuthStore((state) => state.user)
 
@@ -19,17 +19,17 @@ function SuggestedHeader() {
         <Flex alignItems={'center'} gap={2}>
 
           {/** En el Header tendremos foto y nombre de nuestra cuenta; ademas de un link extra para salir de la cuenta */}
-          <Link to={`/:${authUser.userName}`}>
+          <Link to={`${authUser.userName}`}>
             <Avatar size={'md'} src={authUser.profilePicURL} />
           </Link>
-          <Link to={`/:${authUser.userName}`}>
-            <Text fontSize={13} fontWeight={'bold'}>{authUser.userName}</Text>
+          <Link to={`/${authUser.userName}`}>
+            <Text fontSize={12} fontWeight={'bold'}>{authUser.userName}</Text>
           </Link>
         </Flex>
 
         {/** Este link nos dirige a la pagina ya sea para Iniciar Seccion o Registrarnos  */}
         <Button size={ 'xs' } color={ 'blue.400' } backgroundColor={ 'transparent' } _hover={{ backgroundColor: 'transparent' }} fontSize={14}
-          fontWeight={'medium'} cursor={'pointer'} onClick={handleLogOut} isLoading={isLogingOut}
+          fontWeight={'medium'} cursor={'pointer'} onClick={handleLogOut} isLoading={isLoggingOut}
         >
           Cerrar Sesion
         </Button>

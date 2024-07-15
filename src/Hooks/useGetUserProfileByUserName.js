@@ -35,6 +35,7 @@ function useGetUserProfileByUserName(userName) {
 
       } catch (error) {
         showToast('Error', error.message, 'error')
+        
       } finally {
         // Se cambia el estado para indicar que la informacion del usuario ha sido obtenida
         setIsLoading(false);

@@ -7,7 +7,7 @@ import { collection, getDocs, query, where } from "firebase/firestore"
 import { firestore } from "../Firebase/firebase"
 
 // Este custom hook se encarga de obtener los post del feed de la aplicacion, en este caso es el feed de publicaciones que se ven en la barra lateral izquierda
-function useGetFeedPost() { 
+function useGetFeedPosts() { 
   // Se hace uso de un useState para almacenar los post del feed de la aplicacion y tambien se usa el
   // custom hook usePostStore para almacenar las publicaciones
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +19,7 @@ function useGetFeedPost() {
   useEffect(() => {
 
     // Se ejecuta cuando el usuario se loguea o cambia
-    const getFeedPost = async () => {
+    const getFeedPosts = async () => {
       setIsLoading(true)
       if(authUser.following.length === 0) {
         setIsLoading(false)
@@ -38,22 +38,23 @@ function useGetFeedPost() {
           feedPosts.push({id: doc.id, ...doc.data()})
         })
 
-        feedPosts.sort((a, b) => b.createAt - a.createAt)
+        feedPosts.sort((a, b) => b.createdAt - a.createdAt)
         setPosts(feedPosts)
         
       } catch {
         showToast('Error', 'No hay publicaciones recientes', 'error')
+
       } finally {
         setIsLoading(false)
-        }
       }
+    }
+
     if(authUser) {
-      getFeedPost()
-      setUserProfile(authUser)
+      getFeedPosts()
     }
   }, [authUser, showToast, setPosts, setUserProfile]);
   
   return { isLoading, posts }
 }
 
-export default useGetFeedPost
+export default useGetFeedPosts

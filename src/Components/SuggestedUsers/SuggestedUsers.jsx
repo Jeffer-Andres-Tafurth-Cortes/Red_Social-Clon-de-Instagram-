@@ -18,12 +18,11 @@ function SuggestedUsers() {
         {/** La primera comprende lo que es el Header que estara algunas cosas de nuestra cuenta */}
         <SuggestedHeader />
 
-        {
-          suggestedUsers.length !== 0 && (
-            <Flex alignItems={'center'} justifyContent={'space-between'} width={'full'}>
-              <Text fontSize={12} fontWeight={'bold'} color={'gray.500'}>Sugerencias para ti</Text>
-              <Text fontSize={12} color={'blue.500'} cursor={'pointer'}>Ver todos</Text>
-            </Flex>
+        {suggestedUsers.length !== 0 && (
+          <Flex alignItems={'center'} justifyContent={'space-between'} width={'full'}>
+            <Text fontSize={12} fontWeight={'bold'} color={'gray.500'}>Sugerencias para ti</Text>
+            <Text fontSize={12} fontWeight={'bold'} color={'blue.500'} cursor={'pointer'}>Ver todos</Text>
+          </Flex>
         )}   
 
         {/** En la segunda se mostrara algunos usuarios sugeridos */}

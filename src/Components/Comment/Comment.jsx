@@ -1,7 +1,7 @@
 import { Avatar, Flex, Skeleton, SkeletonCircle, Text } from "@chakra-ui/react"
 import useGetUserProfileById from "../../Hooks/useGetUserProfileById"
 import { Link } from "react-router-dom"
-import {timeAgo} from '../../Utils/timeAgo'
+import { timeAgo } from '../../Utils/timeAgo'
 
 // Este componente define los comentarios que se ven cuando se da click en una publicacion de nuestro perfil
 // (los comentarios se ven cuando a abre el Modal)

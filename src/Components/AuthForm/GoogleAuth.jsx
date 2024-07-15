@@ -15,7 +15,7 @@ function GoogleAuth({ prefix }) {
   const showToast = useShowToast()
 
   // Este evento se ejecuta cuando el usuario hace click en el boton de Google para iniciar sesion
-  const loginUSer = useAuthStore((state) => state.login)
+  const loginUser = useAuthStore((state) => state.login)
 
   // Esta es la logica para iniciar sesion con Google
   const handleGoogleAuth = async() => {
@@ -36,13 +36,13 @@ function GoogleAuth({ prefix }) {
         // Si el usuario ya existe, se logea automaticamente
         const userDoc = userSnap.data()
         localStorage.setItem('user-info', JSON.stringify(userDoc))
-        loginUSer(userDoc)
+        loginUser(userDoc)
         
       } else {
 
         // Si el usuario no existe, se crea un nuevo documento en Firestore con sus datos
         const userDoc = {
-          uid: newUser.user.id,
+          uid: newUser.user.uid,
           email: newUser.user.email,
           userName: newUser.user.email.split('@')[0],
           fullName: newUser.user.displayName,
@@ -51,11 +51,11 @@ function GoogleAuth({ prefix }) {
           followers: [],
           following: [],
           post: [],
-          createAt: Date.now()
+          createdAt: Date.now()
         }
-        await setDoc(doc(firestore, 'users', newUser.user.id), userDoc)
+        await setDoc(doc(firestore, 'users', newUser.user.uid), userDoc)
         localStorage.setItem('user-info', JSON.stringify(userDoc))
-        loginUSer(userDoc)
+        loginUser(userDoc)
       }
     } catch (error) {
       showToast('Error', error.message, 'error')

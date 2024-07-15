@@ -77,7 +77,7 @@ function ProfilePost ({ post }) {
              */}
             <Flex>
               <AiFillHeart size={22} />
-              <Text fontWeight={'bold'} marginLeft={1}>{post.likes.length}</Text>
+              <Text fontWeight={'bold'} marginLeft={2}>{post.likes.length}</Text>
             </Flex>
 
             {/** Este Flex mostrara la cantidad de comentarios que tiene una publicacion cuando se pasa el mouse por encima
@@ -85,7 +85,7 @@ function ProfilePost ({ post }) {
              */}
             <Flex>
               <FaComment size={22} />
-              <Text fontWeight={'bold'} marginLeft={1}>{post.comments.length}</Text>
+              <Text fontWeight={'bold'} marginLeft={2}>{post.comments.length}</Text>
             </Flex>
 
           </Flex>
@@ -116,7 +116,7 @@ function ProfilePost ({ post }) {
               <Flex borderRadius={4} overflow={'hidden'} border={'1px solid'} borderColor={'whiteAlpha.300'} flex={1.5} justifyContent={'center'}
                 alignItems={'center'}
               >
-                <Image src={post.imageURL} alt='Publicacion en Instagram' style={{objectFit: 'cover'}} />
+                <Image src={post.imageURL} alt='Publicacion en Instagram' />
               </Flex>
 
               {/** La segunda seccion es mas para mostrar nuestro perfil y algunos detalles de la publicacion, ademas de mostrar comentarios
@@ -128,11 +128,10 @@ function ProfilePost ({ post }) {
                 <Flex alignItems={'center'} justifyContent={'space-between'}>
 
                   <Flex alignItems={'center'} gap={4}>
-                    <Avatar src={userProfile.profilePicURL} size={'sm'} >
+                    <Avatar src={userProfile.profilePicURL} size={'sm'} />
                     <Text fontWeight={'bold'} fontSize={12} textTransform={'lowercase'} >
                       {userProfile.userName}
                     </Text>
-                    </Avatar>
                   </Flex>
 
                   {authUser?.uid === userProfile.uid && (
@@ -161,7 +160,7 @@ function ProfilePost ({ post }) {
 
                 </VStack>
 
-                <Divider marginY={4} backgroundColor={'gray.500'} />
+                <Divider marginY={4} backgroundColor={'gray.800'} />
 
                 {/** Debido a que se usa la misma logica de la parte de comentarios de las publicaciones en el Inicio de la aplicacion
                  * se reutiliza el componente PostFooter a diferente de que con ayuda de un Prop no se renderiza una seccion

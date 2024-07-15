@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { BsBookmark, BsGrid3X3 } from 'react-icons/bs'
-import {ReelsLogo} from '../../assets/Constants'
+import { ReelsLogo } from '../../assets/Constants'
 import { MdOutlinePersonPin } from "react-icons/md";
 
 // Esta componente va a mostrar los tabs del Perfil del usuario, como 'Publicaciones', 'Reels', 'Guardado' y 'Etiquetadas'
@@ -14,7 +14,7 @@ function ProfileTabs() {
           <Box fontSize={20}>
             <BsGrid3X3 />
           </Box>
-          <Text fontSize={14} display={{ base: 'none', sm: 'block'}}>Publicaciones</Text>
+          <Text fontSize={14} display={{ base: 'none', sm: 'block' }}>Publicaciones</Text>
         </Flex>
 
         {/** Este segundo Flex va a ser sobre los Reels  */}
@@ -22,7 +22,7 @@ function ProfileTabs() {
           <Box fontSize={20}>
             <ReelsLogo />
           </Box>
-          <Text fontSize={14} display={{ base: 'none', sm: 'block'}}>Reels</Text>
+          <Text fontSize={14} display={{ base: 'none', sm: 'block' }}>Reels</Text>
         </Flex>
 
         {/** Este tercer Flex va a ser sobre los Guadados */}
@@ -30,7 +30,7 @@ function ProfileTabs() {
           <Box fontSize={20}>
             <BsBookmark />
           </Box>
-          <Text fontSize={14} display={{ base: 'none', sm: 'block'}}>Guardado</Text>
+          <Text fontSize={14} display={{ base: 'none', sm: 'block' }}>Guardado</Text>
         </Flex>
 
         {/** Este cuarto Flex va a ser sobre las Etiquetadas */}

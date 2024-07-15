@@ -32,7 +32,7 @@ function ProfilePage() {
       {/** Luego tendremos dos secciones la cual la primera corresponde a diferentes apartados que podemos acceder dentro de 
        * nuestro perfil y la segunda seccion es donde va a estar las publicaciones que nosotros hayamos hecho
        */}
-      <Flex paddingX={{ base: 2, sm: 10}} maxWidth={'full'} marginX={'auto'} borderTop={'1px solid '} borderColor={'whiteAlpha.300'} 
+      <Flex paddingX={{ base: 2, sm: 10}} maxWidth={'full'} marginX={'auto'} borderTop={'1px solid'} borderColor={'whiteAlpha.300'} 
         direction={'column'}>
         <ProfileTabs />
         <ProfilePosts />

@@ -1,4 +1,4 @@
-// Importamos la funcion que nos ayudara con el tema de creacion de usuarios cuando alguien se registre 
+  // Importamos la funcion que nos ayudara con el tema de creacion de usuarios cuando alguien se registre 
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 
 // Importamos la funcion que nos ayudara con la creacion de un nuevo usuario y almcenamiento de datos en Firebase
@@ -33,6 +33,17 @@ function useSignUpWithEmailAndPassword() {
       return
     }
 
+    // Antes de crear un usuario se debe hacer la comprobacion en la base de datos si ya existe un usuario con el mismo nombre en
+    // en la aplicacion, esto es para el nombre de pila que cada usuario se pone en como va a aparecer en su respectivo perfil
+    const usersRef = collection(firestore, 'users')
+    const q = query(usersRef, where('userName', '==', inputs.userName))
+    const querySnapchot = await getDocs(q)
+
+    if(!querySnapchot.empty){
+      showToast('Error', 'Este nombre de usuario ya existe', 'error')
+      return
+    }
+
     // Si todos los campos estan bien se prosigue con la creacion del usuario en la aplicacion
     try {
 
@@ -40,17 +51,6 @@ function useSignUpWithEmailAndPassword() {
       const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password)
       if (!newUser && error) {
         showToast('Error', error.message, 'error')
-        return
-      }
-
-      // Antes de crear un usuario se debe hacer la comprobacion en la base de datos si ya existe un usuario con el mismo nombre en
-      // en la aplicacion, esto es para el nombre de pila que cada usuario se pone en como va a aparecer en su respectivo perfil
-      const usersRef = collection(firestore, 'users')
-      const q = query(usersRef, where('userName', '==', inputs.userName))
-      const querySnapchat = await getDocs(q)
-
-      if(!querySnapchat.empty){
-        showToast('Error', 'Este nombre de usuario ya existe', 'error')
         return
       }
 

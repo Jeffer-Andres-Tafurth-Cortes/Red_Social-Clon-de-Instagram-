@@ -20,7 +20,7 @@ function PostFooter({ post, isProfilePage, creatorProfile }) {
 
   const commentRef = useRef(null)
 
-  const {isLiked, likes, handleLikePost} = useLikePost(post)
+  const { isLiked, likes, handleLikePost } = useLikePost(post)
 
   const { isOpen, onClose, onOpen } = useDisclosure() 
 
@@ -47,7 +47,7 @@ function PostFooter({ post, isProfilePage, creatorProfile }) {
         </Flex>
 
         {/** El tercer elemento muestra el numero de likes que hay en cada publicacion */}
-        <Text>
+        <Text fontWeight={600} fontSize={'sm'}>
           {likes} likes
         </Text>
 
@@ -63,7 +63,7 @@ function PostFooter({ post, isProfilePage, creatorProfile }) {
         {!isProfilePage && (
           <>
             <Text fontSize='sm' fontWeight={700}>
-              {creatorProfile?.username}{' '}
+              {creatorProfile?.userName}{' '}
               <Text as='span' fontWeight={400}>
                 {post.caption}
               </Text>

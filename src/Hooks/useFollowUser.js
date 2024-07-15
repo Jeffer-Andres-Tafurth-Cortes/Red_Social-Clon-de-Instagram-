@@ -14,7 +14,7 @@ function useFollowUser(userId) {
   const authUser = useAuthStore((state) => state.user)
   const setAuthUser = useAuthStore((state) => state.setUser)
   const { userProfile, setUserProfile } = useUserProfileStore()
-  const showToats = useShowToast()
+  const showToast = useShowToast()
 
   // Esta sera la funcion a ejecutar cuando el usuario desee seguir o dejar de seguir a otro usuario
   const handleFollowUser = async() => {
@@ -34,20 +34,19 @@ function useFollowUser(userId) {
       })
 
       await updateDoc(userToFollowOrUnfollowRef, {
-        followers: isFollowing ?   arrayRemove(authUser.uid) : arrayUnion(authUser.uid)
+        followers: isFollowing ? arrayRemove(authUser.uid) : arrayUnion(authUser.uid)
       })
 
       if(isFollowing){
         // Esta es la logica para el 'dejar de seguir' a algun usuario en la aplicacion
-        setAuthUser({...authUser, following: authUser.following.filter(uid => uid !== userId)})
+        setAuthUser({...authUser, following: authUser.following.filter((uid) => uid !== userId)})
 
         if(userProfile){
-          setUserProfile({...userProfile, followers: authUser.followers.filter(uid => uid !== authUser.uid)})
+          setUserProfile({...userProfile, followers: userProfile.followers.filter(uid => uid !== authUser.uid)})
         }
 
-
         localStorage.setItem('user-info', JSON.stringify({
-          ...authUser, following: authUser.following.filter(uid => uid !== userId)
+          ...authUser, following: authUser.following.filter((uid) => uid !== userId)
         }))
         setIsFollowing(false)
 
@@ -66,7 +65,7 @@ function useFollowUser(userId) {
       }
 
     } catch (error) {
-      showToats('Error', error.message, 'error')
+      showToast('Error', error.message, 'error')
 
     } finally {
       setIsUpdating(false)

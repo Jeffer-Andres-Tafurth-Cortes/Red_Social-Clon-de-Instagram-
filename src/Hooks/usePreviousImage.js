@@ -1,4 +1,4 @@
-import { useState } from'react';
+  import { useState } from'react';
 import useShowToast from './useShowToast'
 
 // Este componente ejecuta la logica empleada cuando se cambia la foto de perfil en el componente EditProfile.jsx

@@ -10,12 +10,12 @@ function Caption({ post }) {
   return (
     <>
       <Flex gap={4}>
-        <Link to={`/${userProfile.username}`}>
+        <Link to={`/${userProfile.userName}`}>
           <Avatar src={userProfile.profilePicURL} size={'sm'} />
         </Link>
         <Flex direction={'column'}>
           <Flex gap={2} alignItems={'center'}>
-            <Link to={`/${userProfile.username}`}>
+            <Link to={`/${userProfile.userName}`}>
               <Text fontWeight={'bold'} fontSize={12}>{userProfile.userName}</Text>
             </Link>
             <Text fontSize={14}>{post.caption}</Text>

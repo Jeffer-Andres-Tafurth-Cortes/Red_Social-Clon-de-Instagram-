@@ -24,6 +24,7 @@ function useGetUserProfileById( userId ) {
         }
       } catch (error) {
         showToast('Error', 'Error al obtener la informacion del usuario', 'error')
+        
       } finally {
         setIsLoading(false)
       }

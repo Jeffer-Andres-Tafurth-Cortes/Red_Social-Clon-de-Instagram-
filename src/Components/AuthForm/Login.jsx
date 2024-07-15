@@ -11,6 +11,7 @@ function Login() {
     password: ''
   })
 
+  // Se hace uso de custom hook useLogin para realizar la autenticacion con los valores de correo y contraseña
   const {loading, error, login} = useLogin()
 
   return (
@@ -22,7 +23,7 @@ function Login() {
         type='email' 
         value={inputs.email} 
         size={'sm'}
-        onChange={(e) => setInputs({...inputs, email:e.target.value})} 
+        onChange={(e) => setInputs({...inputs, email: e.target.value})} 
       />
       
       <Input 
@@ -31,7 +32,7 @@ function Login() {
         type='password' 
         value={inputs.password}
         size={'sm'}
-        onChange={(e) => setInputs({...inputs, password:e.target.value})}
+        onChange={(e) => setInputs({...inputs, password: e.target.value})}
       />
 
       {error &&(

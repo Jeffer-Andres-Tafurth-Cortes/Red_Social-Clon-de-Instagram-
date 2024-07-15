@@ -23,10 +23,8 @@ function Search() {
   return (
     <>
       {/** Todo este 'Tooltip' pertenece al boton de Buscar en la barra lateral de la izquierda */}
-      <Tooltip hasArrow label={'Search'} placement='right' marginLeft={1} 
-        openDelay={500} display={{base: 'block', md: 'none'}}
-      >
-        <Flex display={'flex'} alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} borderRadius={6} padding={2} 
+      <Tooltip hasArrow label={'Search'} placement='right' marginLeft={1} openDelay={500} display={{base: 'block', md: 'none'}}>
+        <Flex alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} borderRadius={6} padding={2} 
           width={{base: '10', md: 'full'}} justifyContent={{base: 'center', md: 'flex-start'}} onClick={onOpen}
         >
           <SearchLogo size={25} />
@@ -38,7 +36,7 @@ function Search() {
 
 
       {/** Este modal se muestra cuando se de click en el boton de buscar */}
-      <Modal isOpen={isOpen} onClose={onClose} motionPresent='slideInLeft'>
+      <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInLeft'>
         <ModalOverlay />
         <ModalContent backgroundColor={'black'} border={'1px solid gray'} maxWidth={'400px'}>
           <ModalHeader>Buscar Usuario</ModalHeader>

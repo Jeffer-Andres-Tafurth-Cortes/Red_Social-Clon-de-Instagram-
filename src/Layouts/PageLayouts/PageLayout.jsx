@@ -15,8 +15,8 @@ function PageLayout({ children }) {
   const canRenderSidebar = pathname !== '/auth' && user
   const canRenderNavbar = !user && !loading && pathname !== '/auth'
 
-  const checkIfUserAuth = !user && loading
-  if(checkIfUserAuth) return <PageLayoutSpinner />
+  const checkingUserIsAuth  = !user && loading
+  if(checkingUserIsAuth ) return <PageLayoutSpinner />
 
   return (
     <>
@@ -29,8 +29,8 @@ function PageLayout({ children }) {
           {canRenderSidebar 
             ? ( <Box width={{base:'70px', md:'240px'}}>
 
-            {/** Barra lateral de la izquierda, la cual va a ser un componente creado aparte */}
-            <Sidebar />
+              {/** Barra lateral de la izquierda, la cual va a ser un componente creado aparte */}
+              <Sidebar />
   
             </Box> ) 
             : null

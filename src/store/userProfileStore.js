@@ -14,7 +14,7 @@ const useUserProfileStore = create((set) => ({
 
 
   deletePost: (postId) => set((state) => ({
-    userProfile:{...state.userProfile, posts: state.userProfile.posts.filter((id) => id!== postId)}
+    userProfile:{...state.userProfile, posts: state.userProfile.posts.filter((id) => id !== postId)}
   }))
   
 }))

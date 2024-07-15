@@ -5,9 +5,7 @@ import { Link as RouterLink} from 'react-router-dom'
 function Home() {
   return (
     <>
-      <Tooltip hasArrow label={'Home'} placement='right' marginLeft={1} 
-        openDelay={500} display={{base: 'block', md: 'none'}}
-      >
+      <Tooltip hasArrow label={'Home'} placement='right' marginLeft={1} openDelay={500} display={{ base: 'block', md: 'none' }}>
         <Link display={'flex'} to={'/'} as={RouterLink} alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} 
           borderRadius={6} padding={2} width={{base: '10', md: 'full'}} justifyContent={{base: 'center', md: 'flex-start'}}
         >
