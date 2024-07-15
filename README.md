@@ -13,7 +13,16 @@ Se desarrollaron varias funciones que la misma aplicacion de Instagram posee, en
 - Como usuario acceder a su propio perfil
 - Dar like a publicaciones realizadas
 - Seguir a otros usuarios (ya sea que se busquen o que aparezca en la seccion se usuarios sugeridos)
-- Cambiar algunos datos basicos dentro del perfil propio (cambiar foto de perfil, cambiar nombre completo, cambiar nombre de usuario, cambiar biografia) 
+- Cambiar algunos datos basicos dentro del perfil propio (cambiar foto de perfil, cambiar nombre completo, cambiar nombre de usuario, cambiar biografia)
+- Realizar comentarios en publicaciones de otros usuarios
+
+## USUARIOS
+Se crearon dos cuentas sencillas para realizar pruebas y funcionamiento de la aplicacion, puede usarlas ya que son correos inventados, los usuarios creados son:
+- correo: johndoe.1@gmail.com , contraseña: 12345678
+- correo: pepito.perez@gmail.com , contraseña: 12345678
+
+> [!NOTE]
+> Toda la informacion se usuarios, correos, publicaciones, comentarios, likes, etc, estaran guardados en Firebase (back-end)
 
 ## TECNOLOGIAS USADAS
 - React (Libreria de desarrollo)
