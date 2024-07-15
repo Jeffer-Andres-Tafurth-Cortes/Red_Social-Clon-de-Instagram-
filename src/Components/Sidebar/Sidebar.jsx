@@ -8,7 +8,7 @@ import SidebarItems from './SidebarItems'
 // Este es el componente de la Barra lateral de la izquierda de toda la aplicacion
 function Sidebar() {
 
-  const { handleLogOut, isLoggingOut } = useLogOut()
+  const { handleLogOut, isLogingOut } = useLogOut()
 
   return (
     <>
@@ -44,7 +44,7 @@ function Sidebar() {
               padding={2} width={{base: '10', md: 'full'}} marginTop={'auto'} justifyContent={{ base: 'center', md: 'flex-start' }}
             >
               <BiLogOut size={25} />
-              <Button display={{base: 'none', md: 'block'}} variant={'ghost'} _hover={{ backgroundColor: 'transparent'}} isLoading={isLoggingOut}>
+              <Button display={{base: 'none', md: 'block'}} variant={'ghost'} _hover={{ backgroundColor: 'transparent'}} isLoading={isLogingOut}>
                 Cerrar Sesion
               </Button>
             </Flex>

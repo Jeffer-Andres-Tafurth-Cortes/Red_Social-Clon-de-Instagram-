@@ -7,7 +7,7 @@ import useAuthStore from "../store/authStore"
 // en al aplicacion, devolviendonos a la pagina de autenticacion 
 function useLogOut() {
 
-  const [signOut, isLoggingOut, error] = useSignOut(auth)
+  const [signOut, isLogingOut, error] = useSignOut(auth)
   const showToast = useShowToast()
   const logoutUser = useAuthStore((state) => state.logout)
 
@@ -22,7 +22,7 @@ function useLogOut() {
     }
   }
 
-  return { handleLogout, isLoggingOut, error }
+  return { handleLogout, isLogingOut, error }
 }
 
 export default useLogOut
