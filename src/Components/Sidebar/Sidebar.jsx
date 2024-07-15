@@ -8,7 +8,7 @@ import SidebarItems from './SidebarItems'
 // Este es el componente de la Barra lateral de la izquierda de toda la aplicacion
 function Sidebar() {
 
-  const { handleLogOut, isLogingOut } = useLogOut()
+  const { handleLogout, isLoggingOut } = useLogOut()
 
   return (
     <>
@@ -40,11 +40,11 @@ function Sidebar() {
 
           {/** Esta ultima parte de la barra lateral de la izquierda corresponde al icono para cerrar sesion */}
           <Tooltip hasArrow label={'Cerrar Sesion'} placement='right' marginLeft={1} openDelay={500} display={{base: 'block', md: 'none'}}>
-            <Flex onClick={handleLogOut} alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} borderRadius={6} 
+            <Flex onClick={handleLogout} alignItems={'center'} gap={4} _hover={{backgroundColor: 'whiteAlpha.400'}} borderRadius={6} 
               padding={2} width={{base: '10', md: 'full'}} marginTop={'auto'} justifyContent={{ base: 'center', md: 'flex-start' }}
             >
               <BiLogOut size={25} />
-              <Button display={{base: 'none', md: 'block'}} variant={'ghost'} _hover={{ backgroundColor: 'transparent'}} isLoading={isLogingOut}>
+              <Button display={{base: 'none', md: 'block'}} variant={'ghost'} _hover={{ backgroundColor: 'transparent'}} isLoading={isLoggingOut}>
                 Cerrar Sesion
               </Button>
             </Flex>
